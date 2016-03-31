@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func Specs() {
+func main() {
 	a := "test"
 	fmt.Println(fmt.Sprintf("%s", a))
 
