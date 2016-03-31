@@ -1,12 +1,13 @@
 {
   "name": "go-signature-statusbar",
   "main": "./lib/go-signature-statusbar",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "Display the signature of the current Go function under cursor in the status bar",
   "keywords": [
     "go",
     "golang",
     "go-plus",
+    "function",
     "signature",
     "statusbar"
   ],
