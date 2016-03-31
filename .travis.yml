@@ -12,7 +12,7 @@ git:
 
 env:
   global:
-    - APM_TEST_PACKAGES="environment go-config"
+    - APM_TEST_PACKAGES="environment go-config go-get"
 
   matrix:
     - ATOM_CHANNEL=stable
