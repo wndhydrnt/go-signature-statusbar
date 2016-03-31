@@ -1,0 +1,107 @@
+# Use the command `window:run-package-specs` (cmd-alt-ctrl-p) to run specs.
+#
+# To run a specific `it` or `describe` block add an `f` to the front (e.g. `fit`
+# or `fdescribe`). Remove the `f` to unfocus the block.
+
+describe "GoSignatureStatusbar", ->
+  [goSignatureStatusbarMain, workspaceElement] = []
+
+  beforeEach ->
+    waitsForPromise ->
+      atom.packages.activatePackage('language-go').then (pack) ->
+        atom.packages.activatePackage('go-config').then (pack) ->
+          atom.packages.activatePackage('go-get').then (pack) ->
+            atom.packages.activatePackage('status-bar').then (pack) ->
+              atom.packages.activatePackage('go-signature-statusbar').then (pack) ->
+                goSignatureStatusbarMain = pack.mainModule
+
+    waitsFor ->
+      goSignatureStatusbarMain.initDone
+
+    runs ->
+      spyOn(goSignatureStatusbarMain.goSignatureStatusbarView, 'textContent').andCallThrough()
+
+    workspaceElement = atom.views.getView(atom.workspace)
+
+  describe 'when the package is activated', ->
+    it 'creates a new status bar tile', ->
+      expect(workspaceElement.querySelectorAll('div.go-signature-statusbar').length).toBe 1
+
+    it 'displays no text in the status bar', ->
+      expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe ''
+
+  describe 'when navigating to a function call in a Go file', ->
+    [editor, goSignatureStatusbarView] = []
+    beforeEach ->
+      waitsForPromise ->
+        atom.workspace.open('main.go').then (e) ->
+          editor = e
+
+      goSignatureStatusbarView = goSignatureStatusbarMain.goSignatureStatusbarView
+
+    it 'displays the signature of a function in the status bar', ->
+      runs ->
+        editor.setCursorScreenPosition([6, 9])
+      waitsFor ->
+        # First call issued on activating the package, second call issued when
+        # opening the file, third call issued when navigating to the position
+        goSignatureStatusbarView.textContent.calls.length is 3
+      runs ->
+        expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe 'Println(a ...interface{}) (n int, err error)'
+
+    it 'displays the signature of a function wrapped by another function in the status bar', ->
+      runs ->
+        editor.setCursorScreenPosition([6, 23])
+      waitsFor ->
+        goSignatureStatusbarView.textContent.calls.length is 3
+      runs ->
+        expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe 'Sprintf(format string, a ...interface{}) string'
+
+    describe 'and the cursor is placed behind the closing bracket of a function', ->
+      it 'displays the signature in the status bar', ->
+        runs ->
+          editor.setCursorScreenPosition([6, 34])
+        waitsFor ->
+          goSignatureStatusbarView.textContent.calls.length is 3
+        runs ->
+          expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe 'Sprintf(format string, a ...interface{}) string'
+        runs ->
+          editor.setCursorScreenPosition([6, 35])
+        waitsFor ->
+          goSignatureStatusbarView.textContent.calls.length is 4
+        runs ->
+          expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe 'Println(a ...interface{}) (n int, err error)'
+
+    describe 'and the cursor is placed on a function that contains line-breaks', ->
+      it 'displays the signature in the status bar', ->
+        runs ->
+          editor.setCursorScreenPosition([8, 12])
+        waitsFor ->
+          goSignatureStatusbarView.textContent.calls.length is 3
+        runs ->
+          expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe 'Print(a ...interface{}) (n int, err error)'
+
+    describe 'and the cursor is moved from above a call to a function to somewhere else', ->
+      it 'clears the signature in the status bar', ->
+        runs ->
+          editor.setCursorScreenPosition([6, 10])
+        waitsFor ->
+          goSignatureStatusbarView.textContent.calls.length is 3
+        runs ->
+          expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe 'Println(a ...interface{}) (n int, err error)'
+        runs ->
+          editor.setCursorScreenPosition([4, 7])
+        waitsFor ->
+          goSignatureStatusbarView.textContent.calls.length is 4
+        runs ->
+          expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe ''
+
+    describe 'and the format is changed', ->
+      it 'formats the output', ->
+        runs ->
+          atom.config.set('go-signature-statusbar.format', '%R %F%A')
+          editor.setCursorScreenPosition([6, 10])
+        waitsFor ->
+          goSignatureStatusbarView.textContent.calls.length is 3
+        runs ->
+          expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe '(n int, err error) Println(a ...interface{})'

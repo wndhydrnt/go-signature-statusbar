@@ -1,0 +1,49 @@
+{
+  "name": "go-signature-statusbar",
+  "main": "./lib/go-signature-statusbar",
+  "version": "0.1.0",
+  "description": "Display the signature of the current Go function under cursor in the status bar",
+  "keywords": [
+    "go",
+    "golang",
+    "go-plus",
+    "signature",
+    "statusbar"
+  ],
+  "repository": "https://github.com/wndhydrnt/go-signature-statusbar",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+    "atom-package-deps": "^4.0.1"
+  },
+  "package-deps": [
+    "go-config",
+    "go-get"
+  ],
+  "consumedServices": {
+    "go-config": {
+      "versions": {
+        "^1.0.0": "consumeGoconfig"
+      }
+    },
+    "go-get": {
+      "versions": {
+        "^1.0.0": "consumeGoget"
+      }
+    },
+    "status-bar": {
+      "versions": {
+        "^1.0.0": "consumeStatusBar"
+      }
+    }
+  },
+  "configSchema": {
+    "format": {
+      "type": "string",
+      "default": "%F%A %R",
+      "description": "Format of the signature in the status bar, where %F is the name of the function, %A its argument(s) and %R the returned type(s)"
+    }
+  }
+}
