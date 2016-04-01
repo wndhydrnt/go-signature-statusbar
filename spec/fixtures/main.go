@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
 func main() {
 	a := "test"
@@ -9,4 +12,6 @@ func main() {
 	fmt.Print(
 		"line break",
 	)
+
+	log.Print(a)
 }
