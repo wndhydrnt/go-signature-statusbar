@@ -114,3 +114,21 @@ describe "GoSignatureStatusbar", ->
           goSignatureStatusbarView.textContent.calls.length is 3
         runs ->
           expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe 'Print(v ...interface{}))'
+
+  describe 'https://github.com/wndhydrnt/go-signature-statusbar/issues/1', ->
+    [editor, goSignatureStatusbarView] = []
+    beforeEach ->
+      waitsForPromise ->
+        atom.workspace.open('issue-1.go').then (e) ->
+          editor = e
+
+      goSignatureStatusbarView = goSignatureStatusbarMain.goSignatureStatusbarView
+
+    describe 'when the function spans multiple lines and "(" is not the last character of the first line', ->
+      it 'displays the signature of a function in the status bar', ->
+        runs ->
+          editor.setCursorScreenPosition([11, 9])
+        waitsFor ->
+          goSignatureStatusbarView.textContent.calls.length is 3
+        runs ->
+          expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe 'Println(a ...interface{}) (n int, err error)'
