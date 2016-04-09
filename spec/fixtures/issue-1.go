@@ -8,7 +8,7 @@ type test struct {
 	attr string
 }
 
-func main() {
+func issue1() {
 	fmt.Println(&test{
 		attr: "test",
 	})
