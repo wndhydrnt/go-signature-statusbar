@@ -1,3 +1,8 @@
+## 1.0.3
+
+Bug fixes:
+* No signature displayed for calls chained together on the same line
+
 ## 1.0.2
 
 Bug fixes:
