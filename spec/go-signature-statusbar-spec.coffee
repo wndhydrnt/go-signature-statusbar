@@ -132,3 +132,46 @@ describe "GoSignatureStatusbar", ->
           goSignatureStatusbarView.textContent.calls.length is 3
         runs ->
           expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe 'Println(a ...interface{}) (n int, err error)'
+
+  describe 'https://github.com/wndhydrnt/go-signature-statusbar/issues/2', ->
+    [editor, goSignatureStatusbarView] = []
+
+    beforeEach ->
+      waitsForPromise ->
+        atom.workspace.open('issue-2.go').then (e) ->
+          editor = e
+
+      goSignatureStatusbarView = goSignatureStatusbarMain.goSignatureStatusbarView
+
+    describe 'when function calls are chained together on the same line', ->
+      it 'displays the signature of the first function in the chain', ->
+        runs ->
+          editor.setCursorScreenPosition([12, 12])
+        waitsFor ->
+          goSignatureStatusbarView.textContent.calls.length is 3
+        runs ->
+          expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe 'NewDecoder(r io.Reader) *json.Decoder'
+
+      it 'displays the signature of a function passed as an argument to the first function in the chain', ->
+        runs ->
+          editor.setCursorScreenPosition([12, 30])
+        waitsFor ->
+          goSignatureStatusbarView.textContent.calls.length is 3
+        runs ->
+          expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe 'NewReader(s string) *strings.Reader'
+
+      it 'displays the signature of the second function in the chain', ->
+        runs ->
+          editor.setCursorScreenPosition([12, 63])
+        waitsFor ->
+          goSignatureStatusbarView.textContent.calls.length is 3
+        runs ->
+          expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe 'Decode(v interface{}) error'
+
+      it 'ignores the "." of a chained call', ->
+        runs ->
+          editor.setCursorScreenPosition([12, 57])
+        waitsFor ->
+          goSignatureStatusbarView.textContent.calls.length is 3
+        runs ->
+          expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe 'NewDecoder(r io.Reader) *json.Decoder'
