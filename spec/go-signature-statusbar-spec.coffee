@@ -113,7 +113,7 @@ describe "GoSignatureStatusbar", ->
         waitsFor ->
           goSignatureStatusbarView.textContent.calls.length is 3
         runs ->
-          expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe 'Print(v ...interface{}))'
+          expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe 'Print(v ...interface{})'
 
   describe 'https://github.com/wndhydrnt/go-signature-statusbar/issues/1', ->
     [editor, goSignatureStatusbarView] = []
@@ -175,3 +175,23 @@ describe "GoSignatureStatusbar", ->
           goSignatureStatusbarView.textContent.calls.length is 3
         runs ->
           expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe 'NewDecoder(r io.Reader) *json.Decoder'
+
+  describe 'https://github.com/wndhydrnt/go-signature-statusbar/issues/5', ->
+    [editor, goSignatureStatusbarView] = []
+
+    beforeEach ->
+      waitsForPromise ->
+        atom.workspace.open('issue-5.go').then (e) ->
+          editor = e
+
+      goSignatureStatusbarView = goSignatureStatusbarMain.goSignatureStatusbarView
+
+    describe 'when the function does not return anything', ->
+      it 'does not add extra closing bracket to the end of the function', ->
+        runs ->
+          editor.setCursorScreenPosition([5, 9])
+        waitsFor ->
+          goSignatureStatusbarView.textContent.calls.length is 3
+        runs ->
+          expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).not.toBe 'Print(v ...interface{}))'
+          expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe 'Print(v ...interface{})'
