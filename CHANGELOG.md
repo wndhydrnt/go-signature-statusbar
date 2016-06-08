@@ -1,3 +1,8 @@
+## 1.1.0
+
+Bug fixes:
+* Too many closing brackets if function has no return value
+
 ## 1.0.3
 
 Bug fixes:
