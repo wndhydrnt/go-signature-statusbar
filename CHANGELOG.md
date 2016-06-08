@@ -1,5 +1,8 @@
 ## 1.1.0
 
+Features:
+* Configure the width of the element in the status bar
+
 Bug fixes:
 * Too many closing brackets if function has no return value
 

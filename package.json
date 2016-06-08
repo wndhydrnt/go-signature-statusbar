@@ -45,6 +45,11 @@
       "type": "string",
       "default": "%F%A %R",
       "description": "Format of the signature in the status bar, where %F is the name of the function, %A its argument(s) and %R the returned type(s)"
+    },
+    "width": {
+      "type": "string",
+      "default": "20vw",
+      "description": "Width of the element in the status bar"
     }
   }
 }

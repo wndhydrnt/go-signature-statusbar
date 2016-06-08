@@ -57,6 +57,14 @@ describe "GoSignatureStatusbar", ->
       runs ->
         expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe 'Sprintf(format string, a ...interface{}) string'
 
+    it 'sets the width of the element in the status bar to the default width', ->
+      runs ->
+        editor.setCursorScreenPosition([9, 23])
+      waitsFor ->
+        goSignatureStatusbarView.textContent.calls.length is 3
+      runs ->
+        expect(workspaceElement.querySelector('div.go-signature-statusbar').style.maxWidth).toBe '20vw'
+
     describe 'and the cursor is placed behind the closing bracket of a function', ->
       it 'displays the signature in the status bar', ->
         runs ->
@@ -114,6 +122,16 @@ describe "GoSignatureStatusbar", ->
           goSignatureStatusbarView.textContent.calls.length is 3
         runs ->
           expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe 'Print(v ...interface{})'
+
+    describe 'and the width of the element in the status bar is changed', ->
+      it 'sets the width of the element in the status bar', ->
+        runs ->
+          atom.config.set('go-signature-statusbar.width', '40vw')
+          editor.setCursorScreenPosition([15, 9])
+        waitsFor ->
+          goSignatureStatusbarView.textContent.calls.length is 3
+        runs ->
+          expect(workspaceElement.querySelector('div.go-signature-statusbar').style.maxWidth).toBe '40vw'
 
   describe 'https://github.com/wndhydrnt/go-signature-statusbar/issues/1', ->
     [editor, goSignatureStatusbarView] = []
