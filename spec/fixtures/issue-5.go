@@ -2,6 +2,6 @@ package main
 
 import "log"
 
-func issue2() {
+func issue5() {
 	log.Print("test")
 }
