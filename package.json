@@ -20,8 +20,7 @@
     "atom-package-deps": "^4.0.1"
   },
   "package-deps": [
-    "go-config",
-    "go-get"
+    "go-plus"
   ],
   "consumedServices": {
     "go-config": {
