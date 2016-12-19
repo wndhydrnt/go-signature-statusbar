@@ -19,18 +19,17 @@
   "dependencies": {
     "atom-package-deps": "^4.0.1"
   },
+  "devDependencies": {
+    "standard": "^8.6.0"
+  },
   "package-deps": [
     "go-plus"
   ],
+  "activationHooks": ["core:loaded-shell-environment"],
   "consumedServices": {
     "go-config": {
       "versions": {
         "^1.0.0": "consumeGoconfig"
-      }
-    },
-    "go-get": {
-      "versions": {
-        "^1.0.0": "consumeGoget"
       }
     },
     "status-bar": {
@@ -45,5 +44,12 @@
       "default": "%F%A %R",
       "description": "Format of the signature in the status bar, where %F is the name of the function, %A its argument(s) and %R the returned type(s)"
     }
+  },
+  "standard": {
+    "globals": [
+      "advanceClock",
+      "atom",
+      "waitsForPromise"
+    ]
   }
 }
