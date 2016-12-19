@@ -1,7 +1,7 @@
 {
   "name": "go-signature-statusbar",
   "main": "./lib/go-signature-statusbar",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Display the signature of the current Go function under cursor in the status bar",
   "keywords": [
     "go",
@@ -25,7 +25,9 @@
   "package-deps": [
     "go-plus"
   ],
-  "activationHooks": ["core:loaded-shell-environment"],
+  "activationHooks": [
+    "core:loaded-shell-environment"
+  ],
   "consumedServices": {
     "go-config": {
       "versions": {
