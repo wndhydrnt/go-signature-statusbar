@@ -17,7 +17,8 @@
     "atom": ">=1.0.0 <2.0.0"
   },
   "dependencies": {
-    "atom-package-deps": "^4.0.1"
+    "atom-package-deps": "^4.0.1",
+    "lodash.debounce": "^4.0.8"
   },
   "devDependencies": {
     "standard": "^8.6.0"
