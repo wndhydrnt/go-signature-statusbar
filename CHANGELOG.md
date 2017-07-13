@@ -1,3 +1,13 @@
+## 1.2.1
+
+Bug fixes:
+* Fix race condition in init
+
+## 1.2.0
+
+Improvements:
+* Depend on go-plus package
+
 ## 1.1.0
 
 Features:
