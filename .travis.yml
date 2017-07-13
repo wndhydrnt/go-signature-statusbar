@@ -3,6 +3,7 @@ os:
   - osx
 
 language: go
+dist: trusty
 
 go:
   - 1.6
@@ -12,7 +13,7 @@ git:
 
 env:
   global:
-    - APM_TEST_PACKAGES="environment go-config go-get"
+    - APM_TEST_PACKAGES="environment go-plus"
 
   matrix:
     - ATOM_CHANNEL=stable
