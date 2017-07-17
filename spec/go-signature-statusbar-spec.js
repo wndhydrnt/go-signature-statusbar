@@ -18,7 +18,7 @@ describe('GoSignatureStatusbar', () => {
       atom.packages.triggerActivationHook('core:loaded-shell-environment')
       workspaceElement = atom.views.getView(atom.workspace)
       jasmine.attachToDOM(workspaceElement)
-      // make _.debounce work in atom < 1.9
+      // make _.debounce work in atom < 1.19
       if (!window.Date.now.isSpy) {
         spyOn(window.Date, 'now').andCallFake(() => window.now)
       }
@@ -69,9 +69,8 @@ describe('GoSignatureStatusbar', () => {
   describe('when the package is activated', () => {
     it('creates a new status bar tile', () => {
       expect(workspaceElement.querySelectorAll('div.go-signature-statusbar').length).toBe(1)
+      expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe('')
     })
-
-    it('displays no text in the status bar', () => expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe(''))
   })
 
   describe('when navigating to a function call in a Go file', () => {
@@ -298,8 +297,11 @@ describe('GoSignatureStatusbar', () => {
 
     describe('when the cursor is above a comment', () =>
       it('displays nothing in the status bar', () => {
-        runs(() => editor.setCursorScreenPosition([3, 2]))
-        waitsFor(() => goSignatureStatusbarView.textContent.calls.length === 3)
+        runs(() => {
+          editor.setCursorScreenPosition([3, 2])
+          advanceClock(301)
+        })
+        waitsFor(() => goSignatureStatusbarView.textContent.calls.length === 2)
         runs(() => {
           expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe('')
         })
