@@ -236,4 +236,28 @@ describe('GoSignatureStatusbar', () => {
       })
     )
   })
+
+  describe('https://github.com/wndhydrnt/go-signature-statusbar/pull/20', () => {
+    let [editor, goSignatureStatusbarView] = []
+
+    beforeEach(() => {
+      waitsForPromise(() =>
+        atom.workspace.open('issue-20.go').then((e) => {
+          editor = e
+        })
+      )
+
+      goSignatureStatusbarView = goSignatureStatusbarMain.goSignatureStatusbarView
+    })
+
+    describe('when the cursor is above a comment', () =>
+      it('displays nothing in the status bar', () => {
+        runs(() => editor.setCursorScreenPosition([3, 2]))
+        waitsFor(() => goSignatureStatusbarView.textContent.calls.length === 3)
+        runs(() => {
+          expect(workspaceElement.querySelector('div.go-signature-statusbar').textContent).toBe('')
+        })
+      })
+    )
+  })
 })
