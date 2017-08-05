@@ -298,7 +298,7 @@ describe('GoSignatureStatusbar', () => {
     describe('when the cursor is above a comment', () =>
       it('displays nothing in the status bar', () => {
         runs(() => {
-          editor.setCursorScreenPosition([3, 2])
+          editor.setCursorScreenPosition([3, 10])
           advanceClock(301)
         })
         waitsFor(() => goSignatureStatusbarView.textContent.calls.length === 2)
