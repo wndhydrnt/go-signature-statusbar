@@ -1,3 +1,9 @@
+## 1.2.2
+
+Bug fixes:
+* Do not render when function is commented out
+* Atom uses significant amount of CPU
+
 ## 1.2.1
 
 Bug fixes:
