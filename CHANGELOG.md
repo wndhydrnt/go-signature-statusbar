@@ -1,3 +1,8 @@
+## 1.2.3
+
+Bug fixes:
+* Uncaught TypeError when closing a tab that displays a signature but is not active
+
 ## 1.2.2
 
 Bug fixes:
