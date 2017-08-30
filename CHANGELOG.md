@@ -2,6 +2,7 @@
 
 Bug fixes:
 * Uncaught TypeError when closing a tab that displays a signature but is not active
+* Uncaught TypeError when the file in a tab gets removed
 
 ## 1.2.2
 
